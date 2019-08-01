@@ -1,5 +1,5 @@
 def GetStationLocation(data):
-    print("<PRINT station_location 基站位置信息>")
+    # print("<PRINT station_location 基站位置信息>")
     # print(data['station_location'])   # 所有的基站的坐标信息
     '''
     格式
@@ -13,10 +13,18 @@ def GetStationLocation(data):
         line_list.append(int(line[0]))
         line_list.append(line[1])
         line_list.append(line[2])
-        print(line_list)
+        # print(line_list)
         station_location.append(line_list)
-        print(station_location)
+        # print(station_location)
         # line_list.clear()
 
     print("<PRINT station_location 基站位置信息>")
     print(station_location)
+    return station_location
+
+
+def GetPathChan(data):
+    # print("<PRINT all path_chan 第一个实验需要的坐标点>")
+    # print(data["path_chan"])
+    print("<Data Size = %d>" % len(data["path_chan"]))
+    return data["path_chan"]

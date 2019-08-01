@@ -20,4 +20,3 @@ def GetStationLocation(data):
 
     print("<PRINT station_location 基站位置信息>")
     print(station_location)
-    # print(station_location[0][0])

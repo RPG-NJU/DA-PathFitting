@@ -23,8 +23,19 @@ def GetStationLocation(data):
     return station_location
 
 
-def GetPathChan(data):
+def GetPathChan(data: dict) -> list:
     # print("<PRINT all path_chan 第一个实验需要的坐标点>")
     # print(data["path_chan"])
     print("<Data Size = %d>" % len(data["path_chan"]))
     return data["path_chan"]
+
+
+def GetXYList(data: list) -> list:  # 返回的list的size为2，只有两项，第一项为X，第二项为Y，都是list
+    x_list = []
+    y_list = []
+    for location in data:
+        x_list.append(location[0])
+        y_list.append(location[1])
+
+    ret_list = [x_list, y_list]
+    return ret_list

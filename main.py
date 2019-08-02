@@ -12,7 +12,10 @@ def main():
     path_chan = GetPathChan(data)
     XY_list = GetXYList(path_chan)
     GetScatterPlot(XY_list[0], XY_list[1])
-    StandardFix.standardFix(XY_list[0], XY_list[1])
+    # StandardFix.standardFix(XY_list[0], XY_list[1])
+    """这里通过库函数来进行拟合，但是拟合的结果并不是非常符合题意，之后也许会进行优化
+       2019.8.2
+    """
     # StandardFix.standardFix()
 
 

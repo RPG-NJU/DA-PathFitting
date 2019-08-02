@@ -13,6 +13,7 @@ def main():
     XY_list = GetXYList(path_chan)
     GetScatterPlot(XY_list[0], XY_list[1])
     StandardFix.standardFix(XY_list[0], XY_list[1])
+    # StandardFix.standardFix()
 
 
 main()

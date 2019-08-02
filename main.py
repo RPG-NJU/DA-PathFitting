@@ -1,6 +1,7 @@
 from ReadFile import *
 from FixData import *
 from DrawPicture import *
+import StandardFix
 
 
 def main():
@@ -11,6 +12,7 @@ def main():
     path_chan = GetPathChan(data)
     XY_list = GetXYList(path_chan)
     GetScatterPlot(XY_list[0], XY_list[1])
+    StandardFix.standardFix(XY_list[0], XY_list[1])
 
 
 main()

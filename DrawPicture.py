@@ -7,5 +7,6 @@ import matplotlib.pyplot as plt
 def GetScatterPlot(x: list, y: list):
     """通过整个方法返回散点图"""
     plt.scatter(x, y, alpha=0.6, s=0.4)
+    plt.title("Raw Data")
     """x y为点的坐标序列 alpha为颜色的深浅 s为点的大小"""
     plt.show()

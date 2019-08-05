@@ -26,7 +26,10 @@ def GetStationLocation(data):
 def GetPathChan(data: dict) -> list:
     # print("<PRINT all path_chan 第一个实验需要的坐标点>")
     # print(data["path_chan"])
-    print("<Data Size = %d>" % len(data["path_chan"]))
+    print("<path_chan Data Size = %d>" % len(data["path_chan"]))
+    # print(data["path_chan"])
+    # print(data["path_chan"].T)
+    # 使用.T可以转置矩阵
     return data["path_chan"]
 
 

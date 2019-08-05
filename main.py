@@ -2,6 +2,7 @@ from ReadFile import *
 from FixData import *
 from DrawPicture import *
 import StandardFix
+from TaskOne import *
 
 
 def main():

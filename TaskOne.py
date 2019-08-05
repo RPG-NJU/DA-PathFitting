@@ -32,7 +32,15 @@ def Linear(X: list, Y: list):
     """用于存储四条直线的a和b"""
     i = 0
     while i < 4:
-        a, b = LinearFit(X[LinearDividePoint[i]: LinearDividePoint[i+1]], Y[LinearDividePoint[i]: LinearDividePoint[i+1]])
+        if i % 2 == 1:
+            a, b = LinearFit(X[LinearDividePoint[i]: LinearDividePoint[i+1]], Y[LinearDividePoint[i]: LinearDividePoint[i+1]])
+        else:
+            a, b = LinearFit(Y[LinearDividePoint[i]: LinearDividePoint[i + 1]],
+                             X[LinearDividePoint[i]: LinearDividePoint[i + 1]])
+            b = 1.0 / b
+
+            a = -a * b
+        print("y=%fx+%f" % (b, a))
         A.append(a)
         B.append(b)
         i += 1
@@ -56,7 +64,7 @@ def Linear(X: list, Y: list):
 
     plt.clf()
     plt.title("Linear Fit")
-    plt.scatter(X, Y, alpha=0.6, s=0.4)
+    plt.scatter(X, Y, alpha=0.4, s=4)
     plt.plot(Xpoint, Ypoint, c="r")
     plt.show()
 

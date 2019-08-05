@@ -9,4 +9,7 @@ def GetScatterPlot(x: list, y: list):
     plt.scatter(x, y, alpha=0.6, s=0.4)
     plt.title("Raw Data")
     """x y为点的坐标序列 alpha为颜色的深浅 s为点的大小"""
+
+    for i in range(0, len(x)):
+        plt.annotate(i, (x[i], y[i]))
     plt.show()

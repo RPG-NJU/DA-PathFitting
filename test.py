@@ -18,7 +18,8 @@ def linear_regression(X, Y) :
     print("linear_regression的输出为", err / np.sqrt(X.shape[0]))
     return w, b
 
-def PCA(X) :
+
+def PCA(X):
     center = X.mean(axis=0)
     demean = X - center
     cov = np.cov(X.T)
@@ -57,7 +58,7 @@ def task1_show(w, b, title='') :
 def task1_sol1() :
     split = [0, 70, 210, 274, 382]
     X, Y = path_chan.T
-    print(type(X))
+    # print(type(X))
     w, b = [], []
     f, t = split[0], split[1]
     cw, cb = linear_regression(Y[f:t], X[f:t])

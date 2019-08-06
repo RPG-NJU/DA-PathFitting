@@ -15,21 +15,15 @@ def LinearFit(X: list, Y: list) -> (float, float):
     """
     x = numpy.array(X)
     y = numpy.array(Y)
-    # print(x, x.T)
-    # print(x @ y.T)
     b = (x - x.mean()) @ (y - y.mean()).T / ((x - x.mean()) @ (x - x.mean()).T)
     a = y.mean() - x.mean() * b
     print("直线最小二乘法拟合结果为 y=%fx+%f" % (b, a))
     return a, b
 
 
-# LinearFit([1, 3, 5], [7, 9, 11])
-
-
 def Linear(X: list, Y: list):
     LinearDividePoint = [0, 70, 211, 275, 382]
     """这个数据是根据展示出来的散点图进行肉眼观察得到的"""
-
     A = list()
     B = list()
     """用于存储四条直线的a和b"""
@@ -47,6 +41,7 @@ def Linear(X: list, Y: list):
         B.append(b)
         i += 1
     # 使用这种通用的方法发现会出现较大的误差，绘图之后是一个梯形
+    # 后来fix了这个误差 2019.8.6
 
     # 得到了斜率和截距的数据之后，需要计算出交点
     Xpoint = list()
@@ -119,20 +114,11 @@ def LinearAndQuadratic(X: list, Y: list):
             x = numpy.arange(X[QuadraticDivide[i][0]], X[QuadraticDivide[i][1]], 0.1)
         else:
             x = numpy.arange(X[QuadraticDivide[i][1]], X[QuadraticDivide[i][0]], 0.1)
-        # x = numpy.arange(0, 10, 0.1)
-        # print(len(x))
-        # print(x)
-        # print(X[QuadraticDivide[i][0]], X[QuadraticDivide[i][1]])
-        # print(X[269], X[296])
         y = a[0] * x ** 2 + a[1] * x + a[2]
         y = y.T
-        # print(y)
-        # print(len(x), len(y))
         plt.plot(x, y, c="r")
         i += 1
-
     # 上面完成了二次拟合的部分，下面需要补充线性拟合部分
-
     A = list()
     B = list()
     """用于存储四条直线的a和b"""
@@ -145,20 +131,14 @@ def LinearAndQuadratic(X: list, Y: list):
             a, b = LinearFit(Y[LinearDivide[i][0]: LinearDivide[i][1]],
                              X[LinearDivide[i][0]: LinearDivide[i][1]])
             b = 1.0 / b
-
             a = -a * b
-        # print("y=%fx+%f" % (b, a))
+            
         A.append(a)
         B.append(b)
         i += 1
 
     LinearDivide[3][1] = 381
     for i in range(0, 4):
-        # print(LinearDivide[i][0], LinearDivide[i][1])
-        # if X[LinearDivide[i][0]] < X[LinearDivide[i][1]]:
-        #     x = numpy.arange(X[LinearDivide[i][0]], X[LinearDivide[i][1]], 0.1)
-        # else:
-        #     x = numpy.arange(X[LinearDivide[i][1]], X[LinearDivide[i][0]], 0.1)
         x = numpy.arange(LinearDrawDivide[i][0], LinearDrawDivide[i][1], 0.1)
         y = B[i] * x + A[i]
         y = y.T
@@ -176,12 +156,6 @@ def MultipleFit(X: list, Y: list, n: int) -> list:
     :return: 返回值为从最高次数项开始的系数list
     本函数采用最小二乘法进行拟合
     """
-    # x = numpy.array(X)
-    # y = numpy.array(Y)
-    # XY = [X, Y]
-    # A = numpy.mat(XY)   # 通过XY数据构建了一个矩阵，作为A
-    # A = A.T # 进行转置得到复合最小二乘法中A的表示
-    # print(A)
     XA = list()
     i = n
     while i >= 0:
@@ -191,11 +165,9 @@ def MultipleFit(X: list, Y: list, n: int) -> list:
         i -= 1
     A = numpy.mat(XA)
     A = A.T
-    # print(A)
     # 通过上面的代码准备完成了一个矩阵
     b = numpy.mat(Y)
     b = b.T
-    # print(b)
     # 再次准备了一个矩阵，b
 
     a = A.I * A.T.I * A.T * b

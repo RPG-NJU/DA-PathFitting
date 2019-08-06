@@ -18,7 +18,8 @@ def main():
        2019.8.2
     """
     # StandardFix.standardFix()
-    Linear(XY_list[0], XY_list[1])
+    # Linear(XY_list[0], XY_list[1])  # 这是进行线性拟合的函数
+    LinearAndQuadratic(XY_list[0], XY_list[1])
 
 
 main()

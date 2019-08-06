@@ -42,3 +42,9 @@ def GetXYList(data: list) -> list:  # 返回的list的size为2，只有两项，
 
     ret_list = [x_list, y_list]
     return ret_list
+
+
+def GetCoord(data: list) -> list:
+
+
+    return data

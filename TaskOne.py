@@ -2,8 +2,7 @@ import numpy
 import matplotlib.pyplot as plt
 
 
-LinearDividePoint = [0, 70, 211, 275, 382]
-"""这个数据是根据展示出来的散点图进行肉眼观察得到的"""
+
 
 
 def LinearFit(X: list, Y: list) -> (float, float):
@@ -12,6 +11,7 @@ def LinearFit(X: list, Y: list) -> (float, float):
     使用最小二乘法进行数据的拟合
     拟合出一个直线
     返回值分别为a，b作为直线的参数
+    @:return y = bx + a，返回a和b
     """
     x = numpy.array(X)
     y = numpy.array(Y)
@@ -19,7 +19,7 @@ def LinearFit(X: list, Y: list) -> (float, float):
     # print(x @ y.T)
     b = (x - x.mean()) @ (y - y.mean()).T / ((x - x.mean()) @ (x - x.mean()).T)
     a = y.mean() - x.mean() * b
-    print("直线最小二乘法拟合结果为 a=%f b=%f" % (a, b))
+    print("直线最小二乘法拟合结果为 y=%fx+%f" % (b, a))
     return a, b
 
 
@@ -27,6 +27,9 @@ def LinearFit(X: list, Y: list) -> (float, float):
 
 
 def Linear(X: list, Y: list):
+    LinearDividePoint = [0, 70, 211, 275, 382]
+    """这个数据是根据展示出来的散点图进行肉眼观察得到的"""
+
     A = list()
     B = list()
     """用于存储四条直线的a和b"""
@@ -40,7 +43,6 @@ def Linear(X: list, Y: list):
             b = 1.0 / b
 
             a = -a * b
-        print("y=%fx+%f" % (b, a))
         A.append(a)
         B.append(b)
         i += 1
@@ -74,3 +76,139 @@ def GetIntersection(a1: float, b1: float, a2: float, b2: float) -> (float, float
     return x, b1 * x + a1
 
 
+# 前面是线性拟合的构造
+# 下面是线性拟合和二次拟合的复合拟合方式
+
+
+def LinearAndQuadratic(X: list, Y: list):
+    """
+    线性拟合与二次拟合的复合拟合方式
+    手动选择需要二次拟合的部分，进行拟合之后拼接
+    可以使用最小二乘法进行拟合
+    """
+    LinearDivide = [
+        [0, 67],
+        [84, 211],
+        [211, 269],
+        [269, 382],
+    ]
+    QuadraticDivide = [
+        [67, 84],
+        [269, 296]
+    ]
+    LinearDrawDivide = [
+        [-423, -403],
+        [-380, 450],
+        [350, 450],
+        [-400, 400]
+    ]
+
+    a_list = list() # 存储了系数的列表
+    for pair in QuadraticDivide:
+        # print(pair)
+        a = MultipleFit(X[pair[0]: pair[1]], Y[pair[0]: pair[1]], 2)
+        a_list.append(a)
+
+    plt.clf()
+    plt.title("Linear And Quadratic")
+
+    i = 0
+    for a in a_list:
+        # x = numpy.array(X[QuadraticDivide[i][0]: QuadraticDivide[i][1]])
+        if X[QuadraticDivide[i][0]] < X[QuadraticDivide[i][1]]:
+            x = numpy.arange(X[QuadraticDivide[i][0]], X[QuadraticDivide[i][1]], 0.1)
+        else:
+            x = numpy.arange(X[QuadraticDivide[i][1]], X[QuadraticDivide[i][0]], 0.1)
+        # x = numpy.arange(0, 10, 0.1)
+        # print(len(x))
+        # print(x)
+        # print(X[QuadraticDivide[i][0]], X[QuadraticDivide[i][1]])
+        # print(X[269], X[296])
+        y = a[0] * x ** 2 + a[1] * x + a[2]
+        y = y.T
+        # print(y)
+        # print(len(x), len(y))
+        plt.plot(x, y, c="r")
+        i += 1
+
+    # 上面完成了二次拟合的部分，下面需要补充线性拟合部分
+
+    A = list()
+    B = list()
+    """用于存储四条直线的a和b"""
+    i = 0
+    while i < 4:
+        if i % 2 == 1:  # 为了减少在垂直方向的误差所设计的
+            a, b = LinearFit(X[LinearDivide[i][0]: LinearDivide[i][1]],
+                             Y[LinearDivide[i][0]: LinearDivide[i][1]])
+        else:
+            a, b = LinearFit(Y[LinearDivide[i][0]: LinearDivide[i][1]],
+                             X[LinearDivide[i][0]: LinearDivide[i][1]])
+            b = 1.0 / b
+
+            a = -a * b
+        # print("y=%fx+%f" % (b, a))
+        A.append(a)
+        B.append(b)
+        i += 1
+
+    LinearDivide[3][1] = 381
+    for i in range(0, 4):
+        # print(LinearDivide[i][0], LinearDivide[i][1])
+        # if X[LinearDivide[i][0]] < X[LinearDivide[i][1]]:
+        #     x = numpy.arange(X[LinearDivide[i][0]], X[LinearDivide[i][1]], 0.1)
+        # else:
+        #     x = numpy.arange(X[LinearDivide[i][1]], X[LinearDivide[i][0]], 0.1)
+        x = numpy.arange(LinearDrawDivide[i][0], LinearDrawDivide[i][1], 0.1)
+        y = B[i] * x + A[i]
+        y = y.T
+        plt.plot(x, y, c="r")
+
+    plt.scatter(X, Y, alpha=0.6, s=0.4)
+    plt.show()
+
+
+def MultipleFit(X: list, Y: list, n: int) -> list:
+    """
+    :param X: 需要拟合的所有点的X坐标list
+    :param Y: Y坐标list
+    :param n: 拟合的最高次数
+    :return: 返回值为从最高次数项开始的系数list
+    本函数采用最小二乘法进行拟合
+    """
+    # x = numpy.array(X)
+    # y = numpy.array(Y)
+    # XY = [X, Y]
+    # A = numpy.mat(XY)   # 通过XY数据构建了一个矩阵，作为A
+    # A = A.T # 进行转置得到复合最小二乘法中A的表示
+    # print(A)
+    XA = list()
+    i = n
+    while i >= 0:
+        x = [x_ ** i for x_ in X]
+        # print(x)
+        XA.append(x)
+        i -= 1
+    A = numpy.mat(XA)
+    A = A.T
+    # print(A)
+    # 通过上面的代码准备完成了一个矩阵
+    b = numpy.mat(Y)
+    b = b.T
+    # print(b)
+    # 再次准备了一个矩阵，b
+
+    a = A.I * A.T.I * A.T * b
+    print("%d次拟合系数为:" % n, a.T)
+    # print(a.T)
+    return a
+
+
+def Cubic(X: list, Y: list):
+    """
+    :param X: X坐标
+    :param Y: Y坐标
+    :return: void
+    通过最小二乘法进行三次函数的拟合实验
+    """
+    DividePoint = [0, 70, 211, 275, 382]    # 从前序实验中直接移植来的分割点

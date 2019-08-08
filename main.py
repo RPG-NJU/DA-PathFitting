@@ -23,6 +23,8 @@ def main():
     # LinearAndQuadratic(XY_list[0], XY_list[1])
 
     coord = GetCoord(data)
+    print(coord)
     test(coord)
+
 
 main()

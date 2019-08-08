@@ -4,12 +4,13 @@ import matplotlib.pyplot as plt
 # plt.show()
 
 
-def GetScatterPlot(x: list, y: list):
+def GetScatterPlot(x: list, y: list, annotate_point_num = 0):
     """通过整个方法返回散点图"""
     plt.scatter(x, y, alpha=0.6, s=0.4)
     plt.title("Raw Data")
     """x y为点的坐标序列 alpha为颜色的深浅 s为点的大小"""
 
-    for i in range(0, len(x)):
-        plt.annotate(i, (x[i], y[i]))
+    if annotate_point_num == 1:
+        for i in range(0, len(x)):
+            plt.annotate(i, (x[i], y[i]))
     plt.show()

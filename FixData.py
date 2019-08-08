@@ -45,6 +45,5 @@ def GetXYList(data: list) -> list:  # 返回的list的size为2，只有两项，
 
 
 def GetCoord(data: list) -> list:
-
-
-    return data
+    # print(data["coord"])    # 这之中就存储了需要的coord数据
+    return data["coord"]

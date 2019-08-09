@@ -15,6 +15,19 @@ def GetAllUsableXY(coord: list) -> list:
     return [X, Y]
 
 
+def GetAllUsableXYandTime(coord: list) -> list:
+    X = list()
+    Y = list()
+    T = list()
+    for line in coord:
+        if line[3] == 1:
+            X.append(line[1])
+            Y.append(line[2])
+            T.append(line[0])
+
+    return [X, Y, T]
+
+
 def GetSpeed(coord: list) -> float:
     """
     :param coord: 所有的coord数据
@@ -114,6 +127,125 @@ def Linear(coord: list):
 #     speed = GetSpeed(coord)
 #     print(speed)
 #     Linear(coord)
+
+
+def GetDelta(data: list) -> list:
+    """
+    :param data: 需要计算的数据列表
+    :return: 返回delta计算结果
+    """
+    res = list()
+    for i in range(0, len(data) - 1):
+        res.append(data[i + 1] - data[i])
+
+    return res
+
+
+def CubicSplineInter(coord: list) -> list:
+    """
+    :param coord:
+    :param begin: 插值的起点
+    :param end: 插值的终点 迭代器方式
+    :return:
+    """
+    XY = GetAllUsableXY(coord)
+    delta_x = GetDelta(XY[0])
+    delta_y = GetDelta(XY[1])
+    # print(XY)
+    L = list()
+    for i in range(0, len(XY[0])):
+        l = [0] * len(XY[0])
+        # print(l)
+        if i == 0:
+            l[0] = 1
+        elif i == len(XY[0]) - 1:
+            l[len(XY[0]) - 1] = 1
+        else:   # 此时是最一般的情况
+            l[i - 1] = delta_x[i - 1]
+            l[i] = 2 * (delta_x[i - 1] + delta_x[i])
+            l[i + 1] = delta_x[i]
+        L.append(l)
+    LM = numpy.mat(L)
+    # print(LM)
+
+    R = list()
+    for i in range(0, len(XY[0])):
+        if i == 0 or i == len(XY[0]) - 1:
+            R.append(0)
+        else:
+            R.append(3 * (delta_y[i] / delta_x[i] - delta_y[i - 1] / delta_x[i - 1]))
+    RM = numpy.mat(R).T
+    # print(LM)
+
+    CM = LM.I * RM
+    # print(CM)
+    C = CM.T.tolist()[0]
+    print(C)
+    # print(C)
+    D = list()
+    B = list()
+    A = [1] * len(C)
+    for i in range(0, len(C) - 1):
+        D.append((C[i + 1] - C[i]) / (3 * delta_x[i]))
+        B.append(delta_y[i] / delta_x[i] - (delta_x[i] / 3) * (2 * C[i] + C[i + 1]))
+
+    B.append(0)
+    D.append(0)
+    print(A, "\n", B, "\n", C, "\n", D)
+    print(len(A), len(B), len(C), len(D))
+
+    interX = list()
+    interY = list()
+
+    XYT = GetAllUsableXYandTime(coord)
+    # print(XYT)
+    for point in coord:
+        if point[3] == 0:
+            i = 0
+            while i < len(XYT[0]) - 1:
+                # print(point[0], XYT[2][i])
+                if XYT[2][i + 1] > point[0] > XYT[2][i]:
+                    t1 = XYT[2][i]
+                    t2 = XYT[2][i + 1]
+                    x1 = XYT[0][i]
+                    x2 = XYT[0][i + 1]
+                    t = point[0]
+                    # x = t * (x1 + x2) / (t1 + t2)
+                    print(x1, x2)
+                    print(t1, t2, t)
+                    x = x1 + (x2 - x1) * (t - t1) / (t2 - t1)
+                    y1 = XYT[1][i]
+                    y = A[i] * y1 + B[i] * (x - x1) + C[i] * (x - x1) ** 2 + D[i] * (x - x1) ** 3
+                    interX.append(x)
+                    interY.append(y)
+                    break
+                else:
+                    i += 1
+        else:
+            continue
+
+    interXY = [interX, interY]
+    print(interXY)
+    return interXY
+
+
+def CubicSpline(coord: list, range=1):
+    """
+    :param coord:
+    :return:
+    三次样条插值的主函数
+    """
+    # 这里考虑进行全局的三次样条拟合
+    XY = GetAllUsableXY(coord)
+    print(XY)
+    interXY = CubicSplineInter(coord)
+    plt.axis('equal')  # 保证XY轴的单位长度是一致的
+    plt.scatter(XY[0], XY[1], alpha=0.6, s=0.8, c="b")
+    plt.scatter(interXY[0], interXY[1], alpha=0.6, s=0.8, c="r")
+    plt.title("CubicSpline")
+    """x y为点的坐标序列 alpha为颜色的深浅 s为点的大小"""
+
+    plt.show()
 
 
 def ShowRawData(coord: list):

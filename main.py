@@ -25,9 +25,10 @@ def main():
 
     coord = GetCoord(data)
     # print(coord)
-    TaskTwo.ShowRawData(coord)
+    # TaskTwo.ShowRawData(coord)
     # TaskTwo.test(coord)
-    TaskTwo.Linear(coord)
+    # TaskTwo.Linear(coord)
+    TaskTwo.CubicSpline(coord)
 
 
 main()

@@ -60,7 +60,47 @@ def Linear(X: list, Y: list):
     print(Xpoint, Ypoint)
 
     plt.clf()
+    plt.axis('equal')  # 保证XY轴的单位长度是一致的
     plt.title("Linear Fit")
+    plt.scatter(X, Y, alpha=0.4, s=4)
+    plt.plot(Xpoint, Ypoint, c="r")
+    plt.show()
+
+
+def LinearWithoutFix(X: list, Y: list):
+    LinearDividePoint = [0, 70, 211, 275, 382]
+    """这个数据是根据展示出来的散点图进行肉眼观察得到的"""
+    A = list()
+    B = list()
+    """用于存储四条直线的a和b"""
+    i = 0
+    while i < 4:
+        a, b = LinearFit(X[LinearDividePoint[i]: LinearDividePoint[i+1]], Y[LinearDividePoint[i]: LinearDividePoint[i+1]])
+        A.append(a)
+        B.append(b)
+        i += 1
+    # 使用这种通用的方法发现会出现较大的误差，绘图之后是一个梯形
+    # 后来fix了这个误差 2019.8.6
+
+    # 得到了斜率和截距的数据之后，需要计算出交点
+    Xpoint = list()
+    Ypoint = list()
+    A += A[0: 1]
+    B += B[0: 1]
+    # print(A, B)
+    for i in range(0, 4):
+        x, y = GetIntersection(A[i], B[i], A[i + 1], B[i + 1])
+        print("测试输出", x, y)
+        Xpoint.append(x)
+        Ypoint.append(y)
+
+    Xpoint += Xpoint[0: 1]
+    Ypoint += Ypoint[0: 1]
+    print(Xpoint, Ypoint)
+
+    plt.clf()
+    plt.axis('equal')  # 保证XY轴的单位长度是一致的
+    plt.title("Linear Fit without Fix")
     plt.scatter(X, Y, alpha=0.4, s=4)
     plt.plot(Xpoint, Ypoint, c="r")
     plt.show()
@@ -144,6 +184,7 @@ def LinearAndQuadratic(X: list, Y: list):
         y = y.T
         plt.plot(x, y, c="r")
 
+    plt.axis('equal')  # 保证XY轴的单位长度是一致的
     plt.scatter(X, Y, alpha=0.6, s=0.4)
     plt.show()
 

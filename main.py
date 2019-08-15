@@ -13,22 +13,18 @@ def main():
     """存储的形式是list的list，每个list子元素中的分布为：编号 X Y"""
     path_chan = GetPathChan(data)
     XY_list = GetXYList(path_chan)
-    # GetScatterPlot(XY_list[0], XY_list[1])
-    # StandardFix.standardFix(XY_list[0], XY_list[1])
-    """
-       这里通过库函数来进行拟合，但是拟合的结果并不是非常符合题意，之后也许会进行优化
-       2019.8.2
-    """
-    # StandardFix.standardFix()
+    # GetScatterPlot(XY_list[0], XY_list[1], 1)
+    # TaskOne.LinearWithoutFix(XY_list[0], XY_list[1])
     # TaskOne.Linear(XY_list[0], XY_list[1])  # 这是进行线性拟合的函数
     # TaskOne.LinearAndQuadratic(XY_list[0], XY_list[1])
 
     coord = GetCoord(data)
-    # print(coord)
     # TaskTwo.ShowRawData(coord)
     # TaskTwo.test(coord)
     # TaskTwo.Linear(coord)
-    TaskTwo.CubicSpline(coord)
+    # TaskTwo.CubicSpline(coord)
+    # TaskTwo.CubicSplineWithFix1(coord)
+    TaskTwo.CubicSplineWithFix2(coord)
 
 
 main()

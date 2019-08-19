@@ -126,7 +126,7 @@ def Linear(coord: list):
     XY = GetAllUsableXY(coord)
     plt.axis('equal')  # 保证XY轴的单位长度是一致的
     plt.scatter(XY[0], XY[1], alpha=0.6, s=0.4)
-    plt.scatter(X, Y, alpha=0.6, s=0.4, c="r")
+    plt.scatter(X, Y, alpha=0.6, s=0.4, c="g")
     plt.title("Linear Inter Data")
     """x y为点的坐标序列 alpha为颜色的深浅 s为点的大小"""
     plt.show()
@@ -259,7 +259,7 @@ def CubicSpline(coord: list, range=1):
 
     plt.axis('equal')  # 保证XY轴的单位长度是一致的
     plt.scatter(XY[0], XY[1], alpha=0.6, s=0.5, c="b")
-    plt.scatter(interXY[0], interXY[1], alpha=0.6, s=0.5, c="r")
+    plt.scatter(interXY[0], interXY[1], alpha=0.6, s=0.5, c="g")
     plt.title("CubicSpline Inter Data")
     """x y为点的坐标序列 alpha为颜色的深浅 s为点的大小"""
 

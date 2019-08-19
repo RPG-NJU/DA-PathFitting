@@ -14,16 +14,25 @@ def main():
     path_chan = GetPathChan(data)
     XY_list = GetXYList(path_chan)
     # GetScatterPlot(XY_list[0], XY_list[1], 1)
-    # TaskOne.LinearWithoutFix(XY_list[0], XY_list[1])
-    # TaskOne.Linear(XY_list[0], XY_list[1])  # 这是进行线性拟合的函数
-    # TaskOne.LinearAndQuadratic(XY_list[0], XY_list[1])
+    TaskOne.LinearWithoutFix(XY_list[0], XY_list[1])
+    TaskOne.Linear(XY_list[0], XY_list[1])  # 这是进行线性拟合的函数
+    TaskOne.LinearAndQuadratic(XY_list[0], XY_list[1])
+    TaskOne.CubicWithoutFix(XY_list[0], XY_list[1])
+    TaskOne.CubicWithFix(XY_list[0], XY_list[1])
+    TaskOne.Quadratic(XY_list[0], XY_list[1])
+
+    # 下面为高次拟合的探究部分
+    TaskOne.nFit(XY_list[0], XY_list[1], 5)
+    # TaskOne.nFit(XY_list[0], XY_list[1], 6)
+    TaskOne.nFit(XY_list[0], XY_list[1], 7)
+    TaskOne.nFit(XY_list[0], XY_list[1], 9)
 
     coord = GetCoord(data)
-    # TaskTwo.ShowRawData(coord)
+    TaskTwo.ShowRawData(coord)
     # TaskTwo.test(coord)
-    # TaskTwo.Linear(coord)
-    # TaskTwo.CubicSpline(coord)
-    # TaskTwo.CubicSplineWithFix1(coord)
+    TaskTwo.Linear(coord)
+    TaskTwo.CubicSpline(coord)
+    TaskTwo.CubicSplineWithFix1(coord)
     TaskTwo.CubicSplineWithFix2(coord)
 
 

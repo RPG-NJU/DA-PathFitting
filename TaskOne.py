@@ -217,7 +217,7 @@ def MultipleFit(X: list, Y: list, n: int) -> list:
     return a
 
 
-def Cubic(X: list, Y: list):
+def CubicWithoutFix(X: list, Y: list):
     """
     :param X: X坐标
     :param Y: Y坐标
@@ -225,3 +225,168 @@ def Cubic(X: list, Y: list):
     通过最小二乘法进行三次函数的拟合实验
     """
     DividePoint = [0, 70, 211, 275, 382]    # 从前序实验中直接移植来的分割点
+
+    plt.clf()
+    plt.title("Cubic Fit without Fix")
+    for i in range(0, 4):
+        a = MultipleFit(X[DividePoint[i]: DividePoint[i + 1]], Y[DividePoint[i]: DividePoint[i + 1]], 3)
+        if DividePoint[i + 1] >= 382:
+            DividePoint[i + 1] -= 1
+        if X[DividePoint[i]] < X[DividePoint[i + 1]]:
+            x = numpy.arange(X[DividePoint[i]], X[DividePoint[i + 1]], 0.1)
+        else:
+            x = numpy.arange(X[DividePoint[i + 1]], X[DividePoint[i]], 0.1)
+        y = a[0] * x ** 3 + a[1] * x ** 2 + a[2] * x + a[3]
+        y = y.T
+        print(y)
+        plt.plot(x, y, c="r")
+
+    plt.axis('equal')  # 保证XY轴的单位长度是一致的
+    plt.scatter(X, Y, alpha=0.6, s=0.4)
+    plt.show()
+
+
+def CubicWithFix(X: list, Y: list):
+    """
+    :param X: X坐标
+    :param Y: Y坐标
+    :return: void
+    通过最小二乘法进行三次函数的拟合实验
+    """
+    DividePoint = [0, 70, 211, 275, 382]    # 从前序实验中直接移植来的分割点
+
+    plt.clf()
+    plt.title("Cubic Fit with Fix")
+    for i in range(0, 4):
+        if i % 2 == 0:
+            a = MultipleFit(Y[DividePoint[i]: DividePoint[i + 1]], X[DividePoint[i]: DividePoint[i + 1]], 3)
+            if DividePoint[i + 1] >= 382:
+                DividePoint[i + 1] -= 1
+            if Y[DividePoint[i]] < Y[DividePoint[i + 1]]:
+                x = numpy.arange(Y[DividePoint[i]], Y[DividePoint[i + 1]], 0.1)
+            else:
+                x = numpy.arange(Y[DividePoint[i + 1]], Y[DividePoint[i]], 0.1)
+            y = a[0] * x ** 3 + a[1] * x ** 2 + a[2] * x + a[3]
+            y = y.T
+            # print(y)
+            plt.plot(y, x, c="r")
+        else:
+            a = MultipleFit(X[DividePoint[i]: DividePoint[i + 1]], Y[DividePoint[i]: DividePoint[i + 1]], 3)
+            if DividePoint[i + 1] >= 382:
+                DividePoint[i + 1] -= 1
+            if X[DividePoint[i]] < X[DividePoint[i + 1]]:
+                x = numpy.arange(X[DividePoint[i]], X[DividePoint[i + 1]], 0.1)
+            else:
+                x = numpy.arange(X[DividePoint[i + 1]], X[DividePoint[i]], 0.1)
+            y = a[0] * x ** 3 + a[1] * x ** 2 + a[2] * x + a[3]
+            y = y.T
+            # print(y)
+            plt.plot(x, y, c="r")
+
+    plt.axis('equal')  # 保证XY轴的单位长度是一致的
+    plt.scatter(X, Y, alpha=0.6, s=0.4)
+    plt.show()
+
+
+def Quadratic(X: list, Y: list):
+    """
+    :param X: X坐标
+    :param Y: Y坐标
+    :return: void
+    通过最小二乘法进行三次函数的拟合实验
+    """
+    DividePoint = [0, 70, 211, 275, 382]    # 从前序实验中直接移植来的分割点
+
+    plt.clf()
+    plt.title("Quadratic Fit")
+    for i in range(0, 4):
+        if i % 2 == 0:
+            a = MultipleFit(Y[DividePoint[i]: DividePoint[i + 1]], X[DividePoint[i]: DividePoint[i + 1]], 4)
+            if DividePoint[i + 1] >= 382:
+                DividePoint[i + 1] -= 1
+            if Y[DividePoint[i]] < Y[DividePoint[i + 1]]:
+                x = numpy.arange(Y[DividePoint[i]], Y[DividePoint[i + 1]], 0.1)
+            else:
+                x = numpy.arange(Y[DividePoint[i + 1]], Y[DividePoint[i]], 0.1)
+            y = a[0] * x ** 4 + a[1] * x ** 3 + a[2] * x ** 2 + a[3] * x + a[4]
+            y = y.T
+            # print(y)
+            plt.plot(y, x, c="r")
+        else:
+            a = MultipleFit(X[DividePoint[i]: DividePoint[i + 1]], Y[DividePoint[i]: DividePoint[i + 1]], 4)
+            if DividePoint[i + 1] >= 382:
+                DividePoint[i + 1] -= 1
+            if X[DividePoint[i]] < X[DividePoint[i + 1]]:
+                x = numpy.arange(X[DividePoint[i]], X[DividePoint[i + 1]], 0.1)
+            else:
+                x = numpy.arange(X[DividePoint[i + 1]], X[DividePoint[i]], 0.1)
+            y = a[0] * x ** 4 + a[1] * x ** 3 + a[2] * x ** 2 + a[3] * x + a[4]
+            y = y.T
+            # print(y)
+            plt.plot(x, y, c="r")
+
+    plt.axis('equal')  # 保证XY轴的单位长度是一致的
+    plt.scatter(X, Y, alpha=0.6, s=0.4)
+    plt.show()
+
+
+# def nF()
+
+
+def nFit(X: list, Y: list, n: int):
+    """
+    :param X: X坐标
+    :param Y: Y坐标
+    :return: void
+    通过最小二乘法进行三次函数的拟合实验
+    """
+    DividePoint = [0, 70, 211, 275, 382]    # 从前序实验中直接移植来的分割点
+
+    plt.clf()
+    plt.title(str(n) + " Fit")
+    for i in range(0, 4):
+        if i % 2 == 0:
+            a = MultipleFit(Y[DividePoint[i]: DividePoint[i + 1]], X[DividePoint[i]: DividePoint[i + 1]], n)
+            if DividePoint[i + 1] >= 382:
+                DividePoint[i + 1] -= 1
+            if Y[DividePoint[i]] < Y[DividePoint[i + 1]]:
+                x = numpy.arange(Y[DividePoint[i]], Y[DividePoint[i + 1]], 0.1)
+            else:
+                x = numpy.arange(Y[DividePoint[i + 1]], Y[DividePoint[i]], 0.1)
+            # y = a[0] * x ** 4 + a[1] * x ** 3 + a[2] * x ** 2 + a[3] * x + a[4]
+            y = x * 0
+            y = numpy.mat(y)
+            y = y.T
+            for k in range(0, n + 1):
+                # print(y)
+                # print(x ** (n - i))
+                y += numpy.mat(a[k] * x ** (n - k)).T
+            y = y.T
+            y = numpy.matrix.tolist(y)
+            y = list(y)[0]
+
+            print(y)
+            plt.plot(y, x, c="r")
+        else:
+            a = MultipleFit(X[DividePoint[i]: DividePoint[i + 1]], Y[DividePoint[i]: DividePoint[i + 1]], n)
+            if DividePoint[i + 1] >= 382:
+                DividePoint[i + 1] -= 1
+            if X[DividePoint[i]] < X[DividePoint[i + 1]]:
+                x = numpy.arange(X[DividePoint[i]], X[DividePoint[i + 1]], 0.1)
+            else:
+                x = numpy.arange(X[DividePoint[i + 1]], X[DividePoint[i]], 0.1)
+            y = x * 0
+            y = numpy.mat(y)
+            y = y.T
+            for k in range(0, n + 1):
+                # print(y)
+                # print(x ** (n - i))
+                y += numpy.mat(a[k] * x ** (n - k)).T
+            y = y.T
+            y = numpy.matrix.tolist(y)
+            y = list(y)[0]
+            plt.plot(x, y, c="r")
+
+    plt.axis('equal')  # 保证XY轴的单位长度是一致的
+    plt.scatter(X, Y, alpha=0.6, s=0.4)
+    plt.show()
